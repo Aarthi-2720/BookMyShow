@@ -5,8 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.bootproject.BookMyShow.entity.Show;
+import com.bootproject.BookMyShow.entity.Shows;
 import com.bootproject.BookMyShow.repo.ShowRepo;
 
 @Repository
@@ -15,13 +14,13 @@ public class ShowDao {
 	@Autowired
 	ShowRepo repo;
 	
-	public Show saveShow(Show show) {
+	public Shows saveShow(Shows show) {
 		return repo.save(show);
 	}
 	
-	public Show findShow(int showId)
+	public Shows findShow(int showId)
 	{
-		Optional<Show> opshow = repo.findById(showId);
+		Optional<Shows> opshow = repo.findById(showId);
 		if(opshow.isPresent())
 		{
 			return opshow.get();
@@ -29,17 +28,17 @@ public class ShowDao {
 		return null;
 	}
 	
-	public Show deleteShow(int showId)
+	public Shows deleteShow(int showId)
 	{
-		Show show =findShow(showId);
+		Shows show =findShow(showId);
 		repo.delete(show);
 		
 		return show;
 	}
 	
-	public Show updateShow(Show show , int  showId)
+	public Shows updateShow(Shows show , int  showId)
 	{
-		Show exshow= findShow(showId);
+		Shows exshow= findShow(showId);
 		
 		if(exshow!=null)
 		{
@@ -49,9 +48,9 @@ public class ShowDao {
 		return null;
 	}
 	
-	public List<Show> findAllShow()
+	public List<Shows> findAllShow()
 	{
-		List<Show> show = repo.findAll();
+		List<Shows> show = repo.findAll();
 		return show;
 	}
 

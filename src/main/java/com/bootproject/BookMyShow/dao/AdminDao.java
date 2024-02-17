@@ -54,4 +54,8 @@ public class AdminDao {
 		List<Admin> admin = repo.findAll();
 		return admin;
 	}
+	
+	public Admin adminLogin(String email, String password) {
+		return repo.adminLogin(email, password);
+	}
 }

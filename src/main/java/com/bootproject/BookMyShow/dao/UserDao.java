@@ -54,4 +54,8 @@ public class UserDao {
 		List<User> user = repo.findAll();
 		return user;
 	}
+	
+	public User userLogin(String email, String password) {
+		return repo.userLogin(email, password);
+	}
 }
