@@ -47,5 +47,15 @@ public class MovieController {
 	public ResponseEntity<ResponseStructure<List<Movie>>> findAllMovie(){
 		return service.findAllMovie();
 	}
+	
+	@PutMapping("assignShow")
+	public ResponseEntity<ResponseStructure<Movie>> assignShowToMovie(@RequestParam int mId, @RequestParam int sId){
+		return service.assignShowToMovie(mId, sId);
+	}
+	
+	@DeleteMapping("removeShow")
+	public ResponseEntity<ResponseStructure<Movie>> deleteShowFromMovie(@RequestParam int mId, @RequestParam int sId){
+		return service.deleteShowFromMovie(mId, sId);
+	}
 
 }

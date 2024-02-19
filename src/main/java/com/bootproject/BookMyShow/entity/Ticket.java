@@ -21,7 +21,7 @@ public class Ticket {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int tId;
-	@Positive(message="Should be greater than 0")
+	@Positive(message = "Should be greater than 0")
 	private double tPrice;
 	
 	@OneToOne(cascade = CascadeType.ALL)

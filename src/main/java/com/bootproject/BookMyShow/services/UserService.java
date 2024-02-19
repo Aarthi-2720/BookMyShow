@@ -146,6 +146,33 @@ public class UserService {
 		throw new UserNotFound("User Login failed");
 	}
 	
-	
+	public ResponseEntity<ResponseStructure<UserDto>> deleteBookingFromUser(String email, String password, int bId){
+		
+		User user = dao.userLogin(email, password);
+		if(user != null) {
+			List<Booking> bookinglist = user.getUBooking();
+			if(!bookinglist.isEmpty()) {
+				for(Booking booking : bookinglist) {
+					int id = booking.getBId();
+					if(id == bId) {
+						bookinglist.remove(bId);
+						user.setUBooking(bookinglist);
+						User upUser = dao.updateUser(user, bId);
+						mapper.map(upUser, dto);
+						
+						ResponseStructure<UserDto> structure = new ResponseStructure<UserDto>();
+						structure.setMessage("Booking removed from User");
+						structure.setStatus(HttpStatus.OK.value());
+						structure.setData(dto);
+						
+						return new ResponseEntity<ResponseStructure<UserDto>>(structure, HttpStatus.OK);
+					}
+				}
+				throw new BookingNotFound("Booking is not found with given id");
+			}
+			throw new BookingNotFound("Booking list is empty");
+		}
+		throw new InvalidEntry("User login failed");
+	}
 }
 	

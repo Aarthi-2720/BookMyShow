@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,8 @@ import com.bootproject.BookMyShow.dto.AdminDto;
 import com.bootproject.BookMyShow.entity.Admin;
 import com.bootproject.BookMyShow.services.AdminService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("admin")
 public class AdminController {
@@ -26,7 +29,7 @@ public class AdminController {
 	AdminService service;
 	
 	@PostMapping
-	public ResponseEntity<ResponseStructure<AdminDto>> saveAdmin(@RequestBody Admin admin){
+	public ResponseEntity<ResponseStructure<AdminDto>> saveAdmin(@Valid @RequestBody Admin admin, BindingResult result){
 		return service.saveAdmin(admin);
 	}
 	
@@ -65,5 +68,13 @@ public class AdminController {
 		return service.assignTheatreToAdmin(email, password);
 	}
 	
+	@DeleteMapping("removeUser")
+	public ResponseEntity<ResponseStructure<AdminDto>> deleteUserFromAdmin(@RequestParam String email, @RequestParam String password,@RequestParam int uId){
+		return service.deleteUserFromAdmin(email, password, uId);
+	}
 
+	@DeleteMapping("removeTheatre")
+	public ResponseEntity<ResponseStructure<AdminDto>> deleteTheatreFromAdmin(@RequestParam String email, @RequestParam String password, @RequestParam int tId){
+		return service.deleteTheatreFromAdmin(email, password, tId);
+	}
 }

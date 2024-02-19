@@ -31,8 +31,11 @@ public class AdminService {
 	AdminDto dto = new AdminDto();
 	ModelMapper mapper = new ModelMapper();
 	
-	UserDao udao = new UserDao();
-	TheatreDao tdao = new TheatreDao();
+	@Autowired
+	UserDao udao;
+	
+	@Autowired
+	TheatreDao tdao;
 	
 	public ResponseEntity<ResponseStructure<AdminDto>> saveAdmin(Admin admin){
 		
@@ -174,6 +177,35 @@ public class AdminService {
 		throw new InvalidEntry("Admin Login failed");
 	}
 	
+	public ResponseEntity<ResponseStructure<AdminDto>> deleteUserFromAdmin(String email, String password, int uId){
+		
+		Admin admin = dao.adminLogin(email, password);
+		if(admin !=null) {
+			List<User> userlist = admin.getAUser();
+			if(!userlist.isEmpty()) {
+				for(User u : userlist ) {
+					int id = u.getUId();
+					if(id==uId) {
+						userlist.remove(uId);
+						udao.deleteUser(uId);
+						admin.setAUser(userlist);
+						Admin upadmin = dao.updateAdmin(admin, admin.getAId());
+						mapper.map(upadmin, dto);
+						ResponseStructure<AdminDto> structure = new ResponseStructure<AdminDto>();
+						structure.setMessage("User successfully removed from Admin");
+						structure.setStatus(HttpStatus.OK.value());
+						structure.setData(dto);
+						
+						return new ResponseEntity<ResponseStructure<AdminDto>>(structure, HttpStatus.OK);
+					}
+				}
+				throw new UserNotFound("User not found with given id");
+			}
+			throw new UserNotFound("User list is empty");
+		}
+		throw new InvalidEntry("Admin Login failed");	
+	}
+	
 	public ResponseEntity<ResponseStructure<AdminDto>> assignTheatreToAdmin(String email, String password){
 		
 		Admin admin = dao.adminLogin(email, password);
@@ -194,4 +226,33 @@ public class AdminService {
 		}
 		throw new InvalidEntry("Admin Login failed");
 	}
+	public ResponseEntity<ResponseStructure<AdminDto>> deleteTheatreFromAdmin(String email, String password, int tId){
+		
+		Admin admin = dao.adminLogin(email, password);
+		if(admin !=null) {
+			List<Theatre> theatrelist = admin.getATheatre();
+			if(!theatrelist.isEmpty()) {
+				for(Theatre t : theatrelist ) {
+					int id = t.getTId();
+					if(id==tId) {
+						theatrelist.remove(tId);
+						tdao.deleteTheatre(tId);
+						admin.setATheatre(theatrelist);
+						Admin upadmin = dao.updateAdmin(admin, admin.getAId());
+						mapper.map(upadmin, dto);
+						ResponseStructure<AdminDto> structure = new ResponseStructure<AdminDto>();
+						structure.setMessage("Theatre successfully removed from Admin");
+						structure.setStatus(HttpStatus.OK.value());
+						structure.setData(dto);
+						
+						return new ResponseEntity<ResponseStructure<AdminDto>>(structure, HttpStatus.OK);
+					}
+				}
+				throw new TheatreNotFound("Theatre does not found with given id");
+			}
+			throw new TheatreNotFound("Theatre list is empty");
+		}
+		throw new InvalidEntry("Admin Login failed");	
+	}	
+	
 }

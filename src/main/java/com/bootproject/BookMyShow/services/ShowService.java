@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.bootproject.BookMyShow.Exception.ShowNotFound;
 import com.bootproject.BookMyShow.config.ResponseStructure;
+import com.bootproject.BookMyShow.dao.MovieDao;
 import com.bootproject.BookMyShow.dao.ShowDao;
+import com.bootproject.BookMyShow.entity.Movie;
 import com.bootproject.BookMyShow.entity.Shows;
 
 @Service
@@ -16,6 +18,9 @@ public class ShowService {
 
 	@Autowired
 	ShowDao dao;
+	
+	@Autowired
+	MovieDao mdao;
 	
 public ResponseEntity<ResponseStructure<Shows>> saveShows(Shows show) {
 		
@@ -90,4 +95,19 @@ public ResponseEntity<ResponseStructure<Shows>> saveShows(Shows show) {
 		}
 		throw new ShowNotFound("Shows are not found");
 	}
+	
+//	public ResponseEntity<ResponseStructure<Shows>> assignMovieToShow(int sId, int mId){
+//		
+//		Shows show = dao.findShow(sId);
+//		if(show!=null) {
+//			Movie movie = mdao.findMovie(mId);
+//			if(movie != null) {
+//				show.setSMovie(movie);
+//				Shows upshow = dao.updateShow(show, sId);
+//				
+//				ResponseStructure<Shows> structure = new ResponseStructure<Shows>();
+//				structure.setMessage(null);
+//			}
+//		}
+//	}
 }

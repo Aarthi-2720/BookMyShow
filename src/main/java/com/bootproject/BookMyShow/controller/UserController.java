@@ -53,4 +53,9 @@ public class UserController {
 	public ResponseEntity<ResponseStructure<UserDto>> assignBookingToUser(@RequestParam String email, @RequestParam String password){
 		return service.assignBookingToUser(email, password);
 	}
+	
+	@DeleteMapping("removebooking")
+	public ResponseEntity<ResponseStructure<UserDto>> deleteBookingFromUser(@RequestParam String email, @RequestParam String password, int bId){
+		return service.deleteBookingFromUser(email, password, bId);
+	}
 }
